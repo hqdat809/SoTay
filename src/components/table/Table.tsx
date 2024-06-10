@@ -5,19 +5,12 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
-import {
-  IEquipmentDetail,
-  TRequestEquipment,
-} from "../../interfaces/equipment-interface";
 import { IUserDetail } from "../../interfaces/user-interfaces";
 
-import { TRootState } from "../../stores/reducers";
-import StateColum from "./request-columns/StateColum";
-import TypeColumn from "./request-columns/TypeColumn";
-import UserColumn from "./request-columns/UserColumn";
-import ActionColumn from "./user-columns/ActionColumn";
-import CategoryColumn from "./category-columns/CategoryColumn";
 import { ICategory } from "../../interfaces/category-interface";
+import { TRootState } from "../../stores/reducers";
+import CategoryColumn from "./category-columns/CategoryColumn";
+import ActionColumn from "./user-columns/ActionColumn";
 
 interface IOwnerEquipmentProps {
   userId: number;
