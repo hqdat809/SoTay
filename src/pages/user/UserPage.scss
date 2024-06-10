@@ -1,0 +1,14 @@
+.UserPage {
+  height: 92%;
+
+  &__actions {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__table {
+    max-width: 100%;
+    height: 100%;
+  }
+}
