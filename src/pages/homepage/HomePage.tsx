@@ -53,73 +53,75 @@ const HomePage = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem(EAuthToken.ACCESS_TOKEN);
-    localStorage.removeItem(EAuthToken.REFRESH_TOKEN);
-    localStorage.removeItem("persist:root");
+    localStorage.removeItem("currentUser");
     handleClose();
     doSignOut();
     window.location.href = RoutePaths.SIGNIN;
   };
 
-  return (
-    <div className="HomePage">
-      <div className="HomePage__sidebar">
-        <Sidebar />
-      </div>
-      <div className="HomePage__outlet">
-        <div className="HomePage__outlet-actions">
-          <div style={{ display: "flex", gap: "8px" }}>
-            <div
-              className="HomePage__outlet-user"
-              onClick={(e) => handleClickUser(e)}
-            >
-              <Avatar
-                alt="hqdat"
-                src="/src/assets/img/avatar.png"
-                sx={{ width: "32px", height: "32px" }}
-              />
-              <div className="HomePage__outlet-user-name">
-                {userData?.firstName} {userData?.lastName}
-                <KeyboardArrowDownRoundedIcon />
+  if (localStorage.getItem("currentUser") == null) {
+    handleLogout();
+  } else {
+    return (
+      <div className="HomePage">
+        <div className="HomePage__sidebar">
+          <Sidebar />
+        </div>
+        <div className="HomePage__outlet">
+          <div className="HomePage__outlet-actions">
+            <div style={{ display: "flex", gap: "8px" }}>
+              <div
+                className="HomePage__outlet-user"
+                onClick={(e) => handleClickUser(e)}
+              >
+                <Avatar
+                  alt="hqdat"
+                  src="/src/assets/img/avatar.png"
+                  sx={{ width: "32px", height: "32px" }}
+                />
+                <div className="HomePage__outlet-user-name">
+                  {userData?.firstName} {userData?.lastName}
+                  <KeyboardArrowDownRoundedIcon />
+                </div>
               </div>
+              <Notification
+                anchorEl={anchorElNoti}
+                handleClose={handleCloseNotification}
+                notifications={notifications}
+              />
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                style={{ right: "28px" }}
+              >
+                <MenuItem
+                  onClick={handleFeatureNotAvailable}
+                  className="Navbar__menu-item"
+                >
+                  <PersonOutlineOutlinedIcon /> <span>Tài khoản</span>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleFeatureNotAvailable}
+                  className="Navbar__menu-item"
+                >
+                  <SettingsIcon /> <span>Cài đặt</span>
+                </MenuItem>
+                <MenuItem onClick={handleLogout} className="Navbar__menu-item">
+                  <LogoutIcon />
+                  <span>Đăng xuất</span>
+                </MenuItem>
+              </Menu>
             </div>
-            <Notification
-              anchorEl={anchorElNoti}
-              handleClose={handleCloseNotification}
-              notifications={notifications}
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              style={{ right: "28px" }}
-            >
-              <MenuItem
-                onClick={handleFeatureNotAvailable}
-                className="Navbar__menu-item"
-              >
-                <PersonOutlineOutlinedIcon /> <span>Tài khoản</span>
-              </MenuItem>
-              <MenuItem
-                onClick={handleFeatureNotAvailable}
-                className="Navbar__menu-item"
-              >
-                <SettingsIcon /> <span>Cài đặt</span>
-              </MenuItem>
-              <MenuItem onClick={handleLogout} className="Navbar__menu-item">
-                <LogoutIcon />
-                <span>Đăng xuất</span>
-              </MenuItem>
-            </Menu>
+          </div>
+          <div className="HomePage__outlet-content">
+            <Outlet />
           </div>
         </div>
-        <div className="HomePage__outlet-content">
-          <Outlet />
-        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default HomePage;
