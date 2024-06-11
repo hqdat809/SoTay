@@ -64,7 +64,7 @@ function* createUserSaga({ payload, cb }: TCreateUserAction) {
     toastSuccess("Tạo người dùng thành công!!");
   } catch (error: any) {
     yield put(getUserFailureAction(error));
-    toastError("Tạo người dùng thất bại!!!");
+    toastError(error.message || "Tạo người dùng thất bại!!!");
   }
 }
 
