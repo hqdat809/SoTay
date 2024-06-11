@@ -2,6 +2,7 @@ export interface IUserDetail {
   id: number;
   email: string;
   accessExpiration: string | number;
+  createdAt: string | number;
 }
 
 export type TSignInRequest = {

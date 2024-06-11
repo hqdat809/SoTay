@@ -48,6 +48,19 @@ export const userColumn: GridColDef[] = [
     },
   },
   {
+    field: "createdAt",
+    headerName: "Ngày tạo",
+    flex: 2,
+    valueGetter: (params: GridValueGetterParams) => {
+      const timestamp = params.row.createdAt;
+      const date = new Date(timestamp);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+      const year = date.getFullYear();
+      return timestamp ? `${day}/${month}/${year}` : "";
+    },
+  },
+  {
     field: "a",
     headerName: "",
     width: 50,

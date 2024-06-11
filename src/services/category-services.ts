@@ -56,7 +56,7 @@ export const createCategoryService = async (payload: ICategory) => {
 
 export const updateCategoryService = async (payload: ICategory) => {
   const db = getDatabase();
-  const idFormatted = payload.id.replace(".", "_");
+  const idFormatted = payload.id.replace(/\./g, "_");
   update(ref(db, `data/question_${idFormatted}`), {
     answer: payload.answer,
     id: payload.id,

@@ -1,3 +1,4 @@
+import { fork } from "redux-saga/effects";
 import {
   get,
   getDatabase,
@@ -22,11 +23,31 @@ export const getUsers = async () => {
   try {
     const db = getDatabase();
     const usersRef = ref(db, "users/");
-    const orderedQuery = query(usersRef, orderByChild("createdAt"));
+    const orderedQuery = query(usersRef);
     const snapshot = await get(orderedQuery);
-    const response = snapshot.val();
+    const response: any[] = snapshot.val();
+    const usersArray = Object.entries(response).map(([id, data]) => ({
+      id,
+      ...data,
+    }));
+    const sortedUsersArray = usersArray.sort((a, b) => {
+      return b.createdAt - a.createdAt;
+    });
+
+    sortedUsersArray.forEach((user) => {
+      update(ref(db, "users/" + user.id), {
+        accessExpiration: 1750032000000,
+      })
+        .then(() => {
+          console.log("Data updated successfully.");
+        })
+        .catch((error) => {
+          console.error("Error saving data: ", error);
+        });
+    });
+
     console.log(response);
-    return response;
+    return sortedUsersArray;
   } catch (error) {
     console.error("Error getting data: ", error);
     throw error; // Ensure that errors are thrown
@@ -45,6 +66,10 @@ export const createUser = async ({
 
   if (typeof expiration === "object") {
     expiration = expiration.getTime();
+    console.log(expiration);
+  } else {
+    const dateObject = new Date(expiration);
+    expiration = dateObject.getTime();
   }
 
   set(ref(db, "users/" + userId), {
@@ -62,12 +87,25 @@ export const createUser = async ({
   return response;
 };
 
-export const updateUser = async ({ id, ...payload }: TUpdateUserRequest) => {
+export const updateUser = async ({
+  id,
+  expiration,
+  ...payload
+}: TUpdateUserRequest) => {
   // const response = await ApiClient.post(`/user/update/${payload.id}`, payload);
   const db = getDatabase();
 
+  if (typeof expiration === "object") {
+    expiration = expiration.getTime();
+    console.log(expiration);
+  } else {
+    const dateObject = new Date(expiration);
+    expiration = dateObject.getTime();
+    console.log(expiration);
+  }
+
   update(ref(db, "users/" + id), {
-    accessExpiration: payload.expiration,
+    accessExpiration: expiration,
   })
     .then(() => {
       console.log("Data updated successfully.");
