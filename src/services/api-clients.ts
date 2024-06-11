@@ -4,7 +4,7 @@ import { SIGNIN } from "../routes/paths";
 
 const instance = axios.create({
   baseURL: "https://handbook-1.onrender.com/", // Replace with your API URL
-  timeout: 10000, // Set request timeout (optional)
+  timeout: 100000, // Set request timeout (optional)
   headers: {
     "Content-Type": "application/json",
   },

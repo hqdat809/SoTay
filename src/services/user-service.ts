@@ -1,6 +1,15 @@
-import { get, getDatabase, ref, set, update } from "firebase/database";
-import { doCreateUserWithEmailAndPassword } from "../firebase/auth";
-import { auth } from "../firebase/firebaseConfig";
+import {
+  get,
+  getDatabase,
+  orderByChild,
+  orderByKey,
+  orderByPriority,
+  orderByValue,
+  query,
+  ref,
+  set,
+  update,
+} from "firebase/database";
 import {
   TChangePasswordRequest,
   TCreateUserRequest,
@@ -12,7 +21,9 @@ import { ApiClient } from "./api-clients";
 export const getUsers = async () => {
   try {
     const db = getDatabase();
-    const snapshot = await get(ref(db, "users/"));
+    const usersRef = ref(db, "users/");
+    const orderedQuery = query(usersRef, orderByChild("createdAt"));
+    const snapshot = await get(orderedQuery);
     const response = snapshot.val();
     console.log(response);
     return response;
@@ -39,6 +50,7 @@ export const createUser = async ({
   set(ref(db, "users/" + userId), {
     email: account.email,
     accessExpiration: expiration,
+    createdAt: Date.now(),
   })
     .then(() => {
       console.log("Data saved successfully.");

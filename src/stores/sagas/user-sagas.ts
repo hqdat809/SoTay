@@ -46,7 +46,10 @@ function* getUserSaga() {
       id,
       ...data,
     }));
-    yield put(getUserSuccessAction(usersArray));
+    const sortedUsersArray = usersArray.sort((a, b) => {
+      return b.createdAt - a.createdAt;
+    });
+    yield put(getUserSuccessAction(sortedUsersArray));
   } catch (error: any) {
     yield put(getUserFailureAction(error));
     (error as Error).message
