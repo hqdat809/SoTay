@@ -24,6 +24,7 @@ export const doCreateUserWithEmailAndPassword = async (
         .uid;
       const db = getDatabase();
       console.log("userID: ", userId);
+      
       set(ref(db, "users/" + userId), {
         email: payload.email,
       })

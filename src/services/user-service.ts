@@ -33,20 +33,6 @@ export const getUsers = async () => {
     const sortedUsersArray = usersArray.sort((a, b) => {
       return b.createdAt - a.createdAt;
     });
-
-    sortedUsersArray.forEach((user) => {
-      update(ref(db, "users/" + user.id), {
-        accessExpiration: 1750032000000,
-      })
-        .then(() => {
-          console.log("Data updated successfully.");
-        })
-        .catch((error) => {
-          console.error("Error saving data: ", error);
-        });
-    });
-
-    console.log(response);
     return sortedUsersArray;
   } catch (error) {
     console.error("Error getting data: ", error);
