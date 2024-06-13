@@ -122,7 +122,7 @@ const CategoryModal = ({
                     label="Câu trả lời"
                     size="small"
                     type="textarea"
-                    rows={4}
+                    rows={10}
                     multiline
                     name="answer"
                     onChange={formikProps.handleChange}
