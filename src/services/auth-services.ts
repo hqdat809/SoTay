@@ -4,7 +4,10 @@ import { ApiClient } from "./api-clients";
 
 export const signIn = (payload: TSignInRequest) => {
   return doSignInWithEmailAndPassword(payload)
-    .then((response) => Promise.resolve(response))
+    .then((response) => {
+      console.log("auth-service");
+      return Promise.resolve(response);
+    })
     .catch((error) => {
       return Promise.reject(error);
     });

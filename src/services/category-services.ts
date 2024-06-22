@@ -1,15 +1,12 @@
 import { get, getDatabase, ref, remove, set, update } from "firebase/database";
-import { ApiClient } from "./api-clients";
 import { ICategory } from "../interfaces/category-interface";
-import { idID } from "@mui/material/locale";
-import { toastError } from "../utils/notifications-utils";
 
 export const getCategoryService = async () => {
   // const response = await ApiClient.get(`/category/get-category`);
 
   try {
     const db = getDatabase();
-    const snapshot = await get(ref(db, "data/"));
+    const snapshot = await get(ref(db, "data_markdown/"));
     const response = snapshot.val();
     console.log(response);
     return response;
@@ -23,7 +20,7 @@ export const createCategoryService = async (payload: ICategory) => {
   return new Promise((resolve, reject) => {
     const db = getDatabase();
     const idFormatted = payload.id.replace(/\./g, "_");
-    const questionRef = ref(db, `data/question_${idFormatted}`);
+    const questionRef = ref(db, `data_markdown/question_${idFormatted}`);
 
     get(questionRef)
       .then((snapshot) => {
@@ -57,7 +54,7 @@ export const createCategoryService = async (payload: ICategory) => {
 export const updateCategoryService = async (payload: ICategory) => {
   const db = getDatabase();
   const idFormatted = payload.id.replace(/\./g, "_");
-  update(ref(db, `data/question_${idFormatted}`), {
+  update(ref(db, `data_markdown/question_${idFormatted}`), {
     answer: payload.answer,
     id: payload.id,
     content: payload.content,
@@ -80,7 +77,7 @@ export const deleteCategory = async (payload: string[]) => {
   const deletePromises = payload.map((id) => {
     const idFormatted = id.replace(/\./g, "_");
     console.log(idFormatted);
-    return remove(ref(db, `data/question_${idFormatted}`))
+    return remove(ref(db, `data_markdown/question_${idFormatted}`))
       .then(() => {
         console.log("Data saved successfully.");
       })

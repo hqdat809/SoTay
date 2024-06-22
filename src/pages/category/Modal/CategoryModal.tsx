@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "../../../components/modal/Modal";
 import * as Yup from "yup";
-import { ErrorMessage, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Button, TextField } from "@mui/material";
 import "./CategoryModal.scss";
 import { ICategory } from "../../../interfaces/category-interface";
+import MDEditor from "@uiw/react-md-editor";
 
 interface ICategoryModalProps {
   isOpenModal: boolean;
@@ -30,7 +31,7 @@ const CategoryModal = ({
     content: Yup.boolean(),
   });
 
-  const handleSubmit = (values: ICategory) => {
+  const handleSubmit = async (values: ICategory) => {
     if (values.answer) {
       values.content = true;
     }
@@ -115,31 +116,18 @@ const CategoryModal = ({
                     className="CategoryModal__form-error-text"
                   />
                 </div>
-
                 <div className="CategoryModal__form-field">
-                  <TextField
-                    variant="outlined"
-                    label="Câu trả lời"
-                    size="small"
-                    type="textarea"
-                    rows={10}
-                    multiline
-                    name="answer"
-                    onChange={formikProps.handleChange}
-                    onBlur={formikProps.handleBlur}
-                    value={formikProps.values.answer}
-                    className={`form-control ${
-                      formikProps.errors.answer &&
-                      formikProps.touched.answer &&
-                      "CategoryModal__form-error"
-                    }`}
-                    placeholder="Nhập câu trả lời"
-                  />
-                  <ErrorMessage
-                    name="answer"
-                    component="div"
-                    className="CategoryModal__form-error-text"
-                  />
+                  <Field name="answer">
+                    {({ field }: { field: any }) => (
+                      <MDEditor
+                        value={field.value}
+                        onChange={(value) => {
+                          formikProps.setFieldValue("answer", value);
+                        }}
+                        height={400}
+                      />
+                    )}
+                  </Field>
                 </div>
                 <div className="CategoryModal__form-action">
                   {isUpdateModal ? (

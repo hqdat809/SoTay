@@ -23,6 +23,7 @@ function* signInSaga({ payload, cb1 }: TSignInAction) {
     if ((error as AxiosError).response?.status == 401) {
       toastError("Email or password is invalid!!");
     } else {
+      console.log(error.message);
       toastError(error.message);
     }
   }

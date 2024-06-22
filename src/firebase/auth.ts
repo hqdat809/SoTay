@@ -1,5 +1,5 @@
 import { child, get, getDatabase, ref, set } from "firebase/database";
-import { auth } from "./firebaseConfig";
+import { auth, db } from "./firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -24,7 +24,7 @@ export const doCreateUserWithEmailAndPassword = async (
         .uid;
       const db = getDatabase();
       console.log("userID: ", userId);
-      
+
       set(ref(db, "users/" + userId), {
         email: payload.email,
       })
@@ -50,20 +50,24 @@ export const doSignInWithEmailAndPassword = (payload: IAccountUser) => {
       console.log(uid);
       console.log(auth);
 
-      const dbRef = ref(getDatabase());
-      return get(child(dbRef, "users/" + uid)).then((snapshot) => {
-        if (
-          !snapshot.exists() ||
-          snapshot.val().role !== "admin" ||
-          snapshot.val().role == null
-        ) {
-          return Promise.reject(
-            new Error("User is not an admin or role is null")
-          );
-        }
+      const dbRef = ref(db);
+      return get(child(dbRef, "users/" + uid))
+        .then((snapshot) => {
+          console.log(snapshot);
+          if (
+            !snapshot.exists() ||
+            snapshot.val().role !== "admin" ||
+            snapshot.val().role == null
+          ) {
+            console.log("auth.ts");
+            return Promise.reject(
+              new Error("User is not an admin or role is null")
+            );
+          }
 
-        return userCredential;
-      });
+          return userCredential;
+        })
+        .catch((e) => console.log(e));
     }
   );
 };
