@@ -1,10 +1,11 @@
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import BuildIcon from "@mui/icons-material/Build";
 import CategoryIcon from "@mui/icons-material/Category";
+import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import { Avatar } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { doSignOut } from "../firebase/auth";
+import * as RoutePaths from "../routes/paths";
 import * as routePath from "../routes/paths";
 import { TRootState } from "../stores/reducers";
 import "./SideBar.scss";
@@ -13,6 +14,12 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userData = useSelector((state: TRootState) => state.authUser.userData);
+
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    doSignOut();
+    window.location.href = RoutePaths.SIGNIN;
+  };
 
   const adminTabs = [
     {
@@ -74,6 +81,12 @@ const Sidebar = () => {
       </div>
       <div className="divider"></div>
       {adminTabs.map((tab, key) => renderSidebarItem(tab, key))}
+      <div onClick={handleLogout} className="Sidebar__item">
+        <div className={`Sidebar__item-wrapper`}>
+          <LogoutIcon />
+          Đăng xuất
+        </div>
+      </div>
     </div>
   );
 };

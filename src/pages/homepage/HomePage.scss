@@ -26,17 +26,16 @@
     margin-left: calc(16vw + 15px);
     margin-bottom: 15px;
 
+    &-nav {
+      display: none;
+    }
+
     &-content {
-      height: calc(100% - 40px);
+      height: auto;
       background-color: white;
       padding: 16px;
       border-radius: 10px;
       width: 100%;
-    }
-
-    &-actions {
-      display: flex;
-      justify-content: flex-end;
     }
 
     &-user {
@@ -53,4 +52,32 @@
 .Navbar__menu-item {
   display: flex;
   gap: 8px;
+}
+
+/* Large devices (tablets in portrait mode, 768px and up) */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .HomePage {
+    &__sidebar {
+      display: none;
+    }
+
+    &__outlet {
+      margin: 0;
+
+      &-nav {
+        display: block;
+        border-radius: 10px;
+
+        .Nav-icon {
+          color: #fff;
+          margin: 10px 0 10px 16px;
+
+          svg {
+            width: 40px;
+            height: 40px;
+          }
+        }
+      }
+    }
+  }
 }

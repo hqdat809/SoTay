@@ -119,13 +119,16 @@ const CategoryModal = ({
                 <div className="CategoryModal__form-field">
                   <Field name="answer">
                     {({ field }: { field: any }) => (
-                      <MDEditor
-                        value={field.value}
-                        onChange={(value) => {
-                          formikProps.setFieldValue("answer", value);
-                        }}
-                        height={400}
-                      />
+                      <>
+                        <MDEditor
+                          className="MDEditor"
+                          value={field.value}
+                          onChange={(value) => {
+                            formikProps.setFieldValue("answer", value);
+                          }}
+                          height={400}
+                        />
+                      </>
                     )}
                   </Field>
                 </div>

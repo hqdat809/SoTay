@@ -1,5 +1,11 @@
 .CategoryModal {
   &__form {
+    min-width: 80vw;
+
+    .MDEditor {
+      min-height: 600px;
+    }
+
     &-field {
       display: flex;
       flex-direction: column;
