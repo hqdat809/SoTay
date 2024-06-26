@@ -126,7 +126,6 @@ const CategoryModal = ({
                           onChange={(value) => {
                             formikProps.setFieldValue("answer", value);
                           }}
-                          height={400}
                         />
                       </>
                     )}
